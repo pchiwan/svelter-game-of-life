@@ -1,52 +1,107 @@
-import Grid from './grid.js';
+import Cell from './cell.js';
 
-function GameOfLife (gridSize, $grid, $score, $message) {
-  const intervalTime = 1000;
-  let g = new Grid(gridSize);
-  let interval = null;
-  let generations = 0;
-  let prevGrid = '';
+const checkNeighbours = (grid, x, y) => {
+	const size = grid.length;
+	let liveNeighbours = 0;
 
-  this.start = () => {
-    init();
-    interval = setInterval(() => {
-      let result = g.tick();
-      generations++;
-      this.drawGrid();
-      if (!result.liveCells) {
-        // our population has died, the game of life is over
-        $message.text('The population has died');
-        this.stop();
-        return;
-      }
-      if (result.currentGrid === prevGrid) {
-        // our population has stagnated, the game of life is over
-        $message.text('The population has stagnated');
-        this.stop();
-        return;
-      }
-      $message.text('Live cells: ' + result.liveCells);
-      prevGrid = result.currentGrid;
-    }, intervalTime);
-  };
+	// check 8 neighbours clockwise
+	liveNeighbours += checkNeighbourXY(
+		grid,
+		getPrevIndex(x, size),
+		getPrevIndex(y, size)
+	); // top left cell
+	liveNeighbours += checkNeighbourXY(grid, x, getPrevIndex(y, size)); // top cell
+	liveNeighbours += checkNeighbourXY(
+		grid,
+		getNextIndex(x, size),
+		getPrevIndex(y, size)
+	); // top right cell
+	liveNeighbours += checkNeighbourXY(grid, getNextIndex(x, size), y); // right cell
+	liveNeighbours += checkNeighbourXY(
+		grid,
+		getNextIndex(x, size),
+		getNextIndex(y, size)
+	); // bottom right cell
+	liveNeighbours += checkNeighbourXY(grid, x, getNextIndex(y, size)); // bottom cell
+	liveNeighbours += checkNeighbourXY(
+		grid,
+		getPrevIndex(x, size),
+		getNextIndex(y, size)
+	); // bottom left cell
+	liveNeighbours += checkNeighbourXY(grid, getPrevIndex(x, size), y); // left cell
 
-  this.stop = () => {
-    if (interval) {
-      clearInterval(interval);
-    }
-  };
+	return liveNeighbours;
+};
 
-  //------------------------------- PRIVATE METHODS
+const checkNeighbourXY = (grid, x, y) => (grid[x][y].live ? 1 : 0);
 
-  const init = () => {
-    generations = 0;
-    $score.text('0');
-    $message.text('');
-    this.stop();
-    this.drawGrid();
-  };
+const getPrevIndex = (x, size) => (x - 1 < 0 ? size - 1 : x - 1);
 
-  init();
-}
+const getNextIndex = (x, size) => (x + 1 === size ? 0 : x + 1);
 
-export default GameOfLife;
+const getNewCell = (cell, liveNeighbours) => {
+	if (liveNeighbours < 2 && cell.live) {
+		// cell dies, as if caused by under-population
+		return cell.die();
+	} else if (liveNeighbours > 3 && cell.live) {
+		// cell dies, as if caused by overcrowding
+		return cell.die();
+	} else if (liveNeighbours === 3 && cell.dead) {
+		// cell becomes live, as if by reproduction
+		return cell.rise();
+	}
+	return cell; // cell lives on to the next generation
+};
+
+const createArray = (size, callbackFn = () => {}) => {
+	return size ? [ ...Array(size).fill() ].map(callbackFn) : [];
+};
+
+export const createGrid = size => {
+	return size
+		? createArray(size, () => createArray(size, () => new Cell()))
+		: [];
+};
+
+export const cloneGrid = grid => {
+	let newGrid = [];
+
+	grid.forEach(row => {
+		let newRow = [];
+		row.forEach(cell => {
+			newRow.push(new Cell(cell.live));
+		});
+		newGrid.push(newRow);
+	});
+
+	return newGrid;
+};
+
+export const toggleCell = (grid, x, y) => {
+	grid[x][y].toggle();
+	return cloneGrid(grid);
+};
+
+export const encodeGrid = grid =>
+	grid.map(row => row.map(cell => (cell.live ? 1 : 0)).join('')).join('');
+
+export const findLiveCells = grid =>
+	grid.reduce(
+		(liveCellsInRow, row) =>
+			liveCellsInRow +
+			row.reduce((liveCells, cell) => liveCells + (cell.live ? 1 : 0), 0),
+		0
+	);
+
+export const newGeneration = grid => {
+	let newGrid = cloneGrid(grid);
+
+	grid.forEach((row, x) => {
+		row.forEach((cell, y) => {
+			let liveNeighbours = checkNeighbours(newGrid, x, y);
+			newGrid[x][y] = getNewCell(cell, liveNeighbours);
+		});
+	});
+
+	return newGrid;
+};

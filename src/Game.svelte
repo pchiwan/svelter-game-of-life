@@ -1,0 +1,97 @@
+<script>
+  import {
+    createGrid,
+    encodeGrid,
+    findLiveCells,
+    newGeneration,
+    toggleCell
+  } from "./game";
+  import Spacer from "./components/Spacer.svelte";
+  import Grid from "./Grid.svelte";
+  import Setup from "./Setup.svelte";
+  import Legend from './Legend.svelte';
+  import Controls from "./Controls.svelte";
+
+  const CYCLE_TIME = 1000;
+
+  let grid = [];
+  let size = 0;
+  let gameOver = false;
+  let generations = 0;
+  let interval = null;
+  let liveCells = 0;
+  let prevGrid = "";
+
+  function handleCreateGrid (newSize) {
+    size = parseInt(newSize, 10);
+    grid = createGrid(size);
+  }
+
+  function handleCellClick (row, cell) {
+    grid = toggleCell(grid, row, cell);
+  }
+
+  function reset () {
+    gameOver = false;
+    generations = 0;
+    interval = null;
+    liveCells = 0;
+    prevGrid = "";
+  }
+
+  function startGame () {
+    reset ();
+
+    interval = setInterval(() => {
+      grid = newGeneration(grid);
+      generations++;
+
+      const currentGrid = encodeGrid(grid);
+      liveCells = findLiveCells(grid);
+
+      if (!liveCells) {
+        // our population has died, the game of life is over
+        stopGame()
+        return;
+      }
+
+      if (currentGrid === prevGrid) {
+        // our population has stagnated, the game of life is over
+        stopGame();
+        return;
+      }
+      prevGrid = currentGrid;
+    }, CYCLE_TIME);
+  }
+
+  function stopGame () {
+    if (interval) {
+      clearInterval(interval);
+      gameOver = true;
+    }
+  }
+
+</script>
+
+<Spacer bottom={4}>
+  <Setup onClick={handleCreateGrid} />
+</Spacer>
+{#if size > 0}
+  <Spacer bottom={2}>
+    <Legend
+      gameOver={gameOver}
+      generations={generations}
+      liveCells={liveCells}
+    />
+  </Spacer>
+  <Spacer bottom={4}>
+    <Grid
+      grid={grid}
+      onCellClick={handleCellClick}
+    />
+  </Spacer>
+  <Controls
+    onStartClick={startGame}
+    onStopClick={stopGame}
+  />
+{/if}

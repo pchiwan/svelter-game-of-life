@@ -1,22 +1,5 @@
 <script>
-  import Grid from "./Grid.svelte";
-  import Setup from "./Setup.svelte";
-  import Spacer from "./Spacer.svelte";
-  import Controls from "./Controls.svelte";
-
-  let gridSize = 0;
-
-  function handleCreateGrid(newGridSize) {
-    gridSize = newGridSize;
-  }
-
-  function handleStartGame() {
-    console.log("start game");
-  }
-
-  function handleStopGame() {
-    console.log("stop game");
-  }
+  import Game from './Game.svelte';
 </script>
 
 <style>
@@ -45,11 +28,5 @@
 <main>
   <h1>Game Of Life</h1>
 
-  <Setup onClick={handleCreateGrid} />
-  <Spacer bottom={4} />
-  <Grid size={gridSize} />
-  <Spacer bottom={4} />
-  {#if gridSize > 0}
-    <Controls onStartClick={handleStartGame} onStopClick={handleStopGame} />
-  {/if}
+  <Game />
 </main>

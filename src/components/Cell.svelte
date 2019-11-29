@@ -3,8 +3,6 @@
   export let cell;
   export let live;
   export let onClick;
-
-  console.log(live);
 </script>
 
 <style>
