@@ -1,19 +1,15 @@
 <script>
-  export let fontWeight = 200;
-  export let fontSize = 20;
-  export let textAlign = 'center';
-  export let color = 'black';
+  import { reduceProps } from "../utils";
 
-  $: style = [
-    `color: ${color}`,
-    `font-size: ${fontSize}px`,
-    `font-weight: ${fontWeight}`,
-    `text-align: ${textAlign}`
-  ]
+  $: style = reduceProps($$props);
 </script>
 
 <style>
   label {
+    font-weight: 200;
+    font-size: 20px;
+    text-align: center;
+    color: black;
     margin: 5px;
   }
 </style>

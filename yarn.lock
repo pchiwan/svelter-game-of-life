@@ -811,6 +811,11 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-0.5.0.tgz#b21510597fd601e5d7c95008b76bf0d254ebfd31"
   integrity sha512-oZLYFEAzUKyi3SKnXvj32ZCEGH6RDnao7COuCVhDydMS9NrCSVXhM79VaKyP5+Zc33m0QXEd2DN3UkU7OsHcfw==
 
+"@queso/kebab-case@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@queso/kebab-case/-/kebab-case-1.1.0.tgz#af48132efaaa88b16d8ea6e8fb97eece04d65c40"
+  integrity sha512-VIpwfTDvD+nbbHKB7JrMv55JN16F8o40BOvLdp+Tyk87/Eu1ikd1xAZlRNtXpo4TfurTopvCGU6DRF5qw/jqHg==
+
 "@types/babel__core@^7.1.0":
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.3.tgz#e441ea7df63cd080dfcd02ab199e6d16a735fc30"

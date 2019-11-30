@@ -1,6 +1,6 @@
 <script>
-  import Label from './components/Label.svelte';
-  import Spacer from './components/Spacer.svelte';
+  import Label from "./components/Label.svelte";
+  import Spacer from "./components/Spacer.svelte";
 </script>
 
 <style>
@@ -18,7 +18,7 @@
 
 <div>
   <Spacer top={5} bottom={2}>
-    <Label fontSize={12}>Powered by</Label>
+    <Label fontSize="12px">Powered by</Label>
     <img src="/svelte-logo.png" alt="Svelte Logo" />
   </Spacer>
 </div>
