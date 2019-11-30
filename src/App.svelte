@@ -1,12 +1,16 @@
 <script>
   import Game from './Game.svelte';
+  import Footer from './Footer.svelte';
 </script>
 
 <style>
   main {
+    display: flex;
+    flex-direction: column;
     text-align: center;
     padding: 1em;
     max-width: 240px;
+    height: 100%;
     margin: 0 auto;
   }
 
@@ -27,6 +31,8 @@
 
 <main>
   <h1>Game Of Life</h1>
-
-  <Game />
+  <div style="flex: 1">
+    <Game />
+  </div>
+  <Footer />
 </main>
