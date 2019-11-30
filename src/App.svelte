@@ -1,6 +1,6 @@
 <script>
-  import Game from './Game.svelte';
-  import Footer from './Footer.svelte';
+  import Game from "./Game.svelte";
+  import Footer from "./Footer.svelte";
 </script>
 
 <style>
@@ -8,8 +8,8 @@
     display: flex;
     flex-direction: column;
     text-align: center;
-    padding: 1em;
-    max-width: 240px;
+    padding: 16px;
+    max-width: none;
     height: 100%;
     margin: 0 auto;
   }
@@ -17,14 +17,19 @@
   h1 {
     color: #ff3e00;
     text-transform: uppercase;
-    font-size: 4em;
+    font-size: 64px;
     font-weight: 100;
     box-shadow: 0 1px #ff3e00;
   }
 
-  @media (min-width: 640px) {
+  @media (max-width: 480px) {
     main {
-      max-width: none;
+      max-width: 280px;
+    }
+
+    h1 {
+      font-size: 42px;
+      margin: 20px 0;
     }
   }
 </style>
