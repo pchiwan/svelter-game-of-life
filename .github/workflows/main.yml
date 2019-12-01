@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: 
+      - master
+
+jobs:
+  build-deplpu:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Install dependencies
+      run: yarn
+      
+    - name: Build
+      run: yarn build
+    
+    - name: Deploy
+      run: cd public && now deploy --name svelter-game-of-live --prod --token ${{ secrets.NOW_TOKEN }}
