@@ -8,7 +8,6 @@
     display: flex;
     flex-direction: column;
     text-align: center;
-    padding: 16px;
     max-width: none;
     height: 100%;
     margin: 0 auto;
