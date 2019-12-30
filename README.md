@@ -2,6 +2,8 @@
 
 An implementation of Conway's Game of Life using Svelte.
 
+Play with it here: https://svelter-game-of-life.now.sh/
+
 ## Introduction
 
 The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970.
